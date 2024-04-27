@@ -1,0 +1,5 @@
+[
+  { "desc": "Home", "default": true, "url": "/articles/home.md" },
+  { "desc": "Godot: First shader", "default": false, "url": "/articles/game-dev/godot/first-shader.md" },
+  { "desc": "Godot: Input orchestration", "default": false, "url": "/articles/game-dev/godot/input-orchestration.md" }
+]

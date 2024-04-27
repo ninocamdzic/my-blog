@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en:Us">
+  <head>
+    <title></title>
+    <style>
+      body, html {
+        margin: 0;
+      }
+
+      body {
+        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+      }
+
+      nav ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .site-wrapper {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+      }
+
+      .site-wrapper nav {
+        flex-basis: 300px;
+        flex-grow: 0;
+        flex-shrink: 0;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .site-wrapper main {
+        flex-grow: 1;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      h1 {
+        margin: 0;
+      }
+
+      a {
+        color: #999;
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #000;
+      }
+
+      nav ul {
+        margin-top: 30px;
+      }
+
+      nav ul li {
+        margin-bottom: 5px;
+      }
+
+      nav ul li a.selected {
+        text-decoration: underline;
+      }
+
+      article {
+        opacity: 100%;
+      }
+    </style>
+    <script src="lib/showdown.min.js"></script>
+    <script>
+      (function() {
+        let articleElem;
+        let linkElems = [];
+
+        function initArticleElem() {
+          articleElem = document.querySelector('main article');
+        }
+
+        function clearAllLinkSelected() {
+          for (let linkElem of linkElems) {
+            linkElem.classList.remove('selected');
+          }
+        }
+
+        function makeLinkSelected(linkElem) {
+          clearAllLinkSelected();
+          linkElem.classList.add('selected');
+        }
+
+        async function initNavigation() {
+          const navItems = await loadNavigationData();
+          const navListElem = document.querySelector('nav ul');
+          let defaultLinkElem;
+
+          for (let navItem of navItems) {
+            const linkElem = document.createElement('a');
+            linkElem.href = navItem.url;
+            linkElem.innerText = navItem.desc;
+            linkElem.addEventListener('click', async function(e) {
+              e.preventDefault();
+              await loadArticle(this.href);
+              makeLinkSelected(this);
+            });
+            linkElems.push(linkElem);
+
+            const listItemElem = document.createElement('li');
+            listItemElem.appendChild(linkElem);
+            navListElem.appendChild(listItemElem);
+
+            if (navItem.default === true) {
+              defaultLinkElem = linkElem;
+            }
+          }
+
+          if (defaultLinkElem) {
+            loadArticle(defaultLinkElem.href);
+            makeLinkSelected(defaultLinkElem);
+          }
+        }
+
+        async function loadNavigationData() {
+          const response = await window.fetch('/navigation.json');
+
+          if (response.ok) {
+            return await response.json()
+          }
+
+          throw new Error('Failed to load navigation.')
+        }
+
+        async function loadArticle(url) {
+          const response = await window.fetch(url);
+
+          if (response.ok) {
+            const converter = new showdown.Converter()
+            const text = await response.text();
+            const html = converter.makeHtml(text);
+            articleElem.innerHTML = html;
+          } else {
+            articleElem.innerHTML = 'Failed to load the article.';
+          }
+        }
+
+        window.addEventListener('DOMContentLoaded', async function(e) {
+          initArticleElem();
+          initNavigation();
+        });
+      }());
+    </script>
+  </head>
+  <body>
+    <div class="site-wrapper">
+      <nav>
+        <h1>Blog Title</h1>
+        <ul></ul>
+      </nav>
+      <main>
+        <article></article>
+      </main>
+    </div>
+  </body>
+</html>

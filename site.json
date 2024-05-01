@@ -1,0 +1,37 @@
+{
+  "name": "Your site name",
+  "author": "Author name",
+  "contact": {
+    "mail": "author@mail.here",
+    "twitter": "Twitter handle here"
+  },
+  "tags": [
+    { "id": "godot", "desc": "Godot" },
+    { "id": "web-dev", "desc": "Web Dev" }
+  ],
+  "pages": [
+    { 
+      "desc": "Home", 
+      "default": true, 
+      "url": "/articles/home.md"
+    },
+    { 
+      "desc": "Godot: First shader", 
+      "default": false, 
+      "url": "/articles/game-dev/godot/first-shader.md",
+      "datePublished": "01-01-2024 17:01:02 CEST",
+      "tags": [
+        "godot"
+      ]
+    },
+    { 
+      "desc": "Godot: Input orchestration", 
+      "default": false, 
+      "url": "/articles/game-dev/godot/input-orchestration.md",
+      "datePublished": "01-01-2024 17:02:02 CEST",
+      "tags": [
+        "godot"
+      ]
+    }
+  ]
+}

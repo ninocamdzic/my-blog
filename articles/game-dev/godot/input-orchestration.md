@@ -61,7 +61,6 @@ func _allow_input(state: Enums.GameState):
 					print(node.name + " input disabled.")
 					node.set_process_input(false)
 ```
-
 The InputOrchestrator has an export variable where we can configure which UI's should be able to handle input when a specific game state is active. Once the game state changes (`_on_game_state_changed`) the InputOrchestrator goes through all configured game states and determines for which game state to enable input. I'm sure the algorithm can be optimized, but for the moment it gets the job done.
 
 First, we need to attach the InputOrchestrator.gd script to a node. I usually add them as a direct child of the root node. Once the script is attached, we can configure the InputOrchestrator.

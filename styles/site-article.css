@@ -1,0 +1,27 @@
+article {
+  text-align: justify;
+}
+
+article h1 {
+  border-bottom: 1px solid #2c2f33;
+  color: #ff7e67;
+  padding-bottom: 10px;
+  text-transform: none;
+}
+
+article pre {
+  border-radius: 5px;
+  overflow: scroll;
+  padding: 10px;
+}
+
+article pre code {
+  font-size: 0.9rem;
+}
+
+article img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 5px;
+}

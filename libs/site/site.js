@@ -1,25 +1,50 @@
+import articleRenderer from "./article-renderer/article-renderer.js";
+import codeHighlighter from "./code-highlighter/code-highlighter.js";
+
 const CLASS_SELECTED = 'selected';
 const PAGE_PARAM = 'page';
 const PATH_REGEX = /^(\/[a-zA-Z0-9\-]+)*(\/[a-zA-Z0-9\-]+\.md)$/g;
+const LOAD_ARTICLE_FAILED = 'Failed to retrieve the article.';
 
 export class Site {
-  async init(dataUrl) {
-    const response = await window.fetch(dataUrl);
+  #siteMetadata;
+  #pageMap;
 
-    if (response.ok) {
-      const site = await response.json();
-      this.#initArticles(site.pages);
-      this.#initInitialPage(site.pages);
-    } else {
-      throw new Error('Failed to load site.json.');
+  async init(metadataUrl) {
+    if (!this.#siteMetadata) {
+      const response = await window.fetch(metadataUrl);
+
+      if (response.ok) {
+        this.#siteMetadata = await response.json();
+        this.#pageMap = this.#createPageMap(this.#siteMetadata.pages);
+        this.#initArticleLinks(this.#siteMetadata.pages);
+        this.#initInitialPage(this.#siteMetadata.pages);
+        console.log(`Site '${this.#siteMetadata.name}' successfully initialized.`);
+      } else {
+        throw new Error('Failed to load site.json.');
+      }
     }
   }
 
-  #initArticles(navItems) {
+  #createPageMap(pages) {
+    const result = [];
+
+    for (let page of pages) {
+      result[page.url] = page;
+    }
+
+    return result;
+  }
+
+  #getPageByPath(path) {
+    return this.#pageMap[path];
+  }
+
+  #initArticleLinks(pages) {
     const navListElem = this.#getNavListElement();
 
-    for (let navItem of navItems) {
-      const navItemElem = this.#createNavItemElement(navListElem, navItem.url, navItem.desc);
+    for (let page of pages) {
+      const navItemElem = this.#createNavItemElement(navListElem, page.url, page.desc);
 
       (function(site) {
         navItemElem.addEventListener('click', async function(e) {
@@ -60,41 +85,35 @@ export class Site {
   }
 
   async #loadArticle(path) {
-    const dateTimeMs = new Date().getMilliseconds();
-    const response = await window.fetch(`${path}?dateTime=${dateTimeMs}`);
-    const articleElem = document.querySelector('main article');
+    const page = this.#getPageByPath(path);
 
-    if (response.ok) {
-      window.history.pushState('', '', `/?${PAGE_PARAM}=${path}`);
-
-      const text = await response.text();
-      articleElem.innerHTML = this.#toHtml(text);
-
-      // TODO Make plugin.
-      if (Prism) {
-        const codeElems = document.querySelectorAll('code');
-
-        for (let codeElem of codeElems) {
-          Prism.highlightElement(codeElem);
-        }
+    if (page) {
+      const dateTimeMs = new Date().getMilliseconds();
+      const response = await window.fetch(`${path}?dateTime=${dateTimeMs}`);
+      const articleElem = document.querySelector('main article');
+  
+      if (response.ok) {
+        window.history.pushState('', '', `/?${PAGE_PARAM}=${path}`);
+  
+        const text = await response.text();
+        articleElem.innerHTML = articleRenderer.render(text, { 
+          page: page
+        });
+        this.#highlightCodeBlocks();
+      } else {
+        articleElem.innerHTML = LOAD_ARTICLE_FAILED;
       }
     } else {
-      articleElem.innerHTML = 'Failed to retrieve the article.';
+      articleElem.innerHTML = LOAD_ARTICLE_FAILED;
     }
   }
 
-  #toHtml(text) {
-    const converter = new showdown.Converter({
-      extensions: [
-        {
-          type    : 'output', 
-          regex   : /<pre class="(.*)"\>/g, 
-          replace : '<pre class="$1 HOHOHO">'
-        }
-      ]
-    });
-    converter.setOption('tables', true);
-    return converter.makeHtml(text);
+  #highlightCodeBlocks() {
+    const codeElems = document.querySelectorAll('code');
+
+    for (let codeElem of codeElems) {
+      codeHighlighter.highlight(codeElem);
+    }
   }
 
   #getNavListElement() {

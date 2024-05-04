@@ -1,4 +1,4 @@
-import { Site } from './site.js';
+import { Site } from './site/site.js';
 import { Menu } from './menu.js';
 
 window.addEventListener('DOMContentLoaded', async function(e) {

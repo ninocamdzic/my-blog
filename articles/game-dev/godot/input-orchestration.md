@@ -1,4 +1,5 @@
 # Input orchestration in Godot
+<sup>Published on: %{date-published}%</sup>
 
 Handling input in Godot is not that difficult. We can use the _input method or we can use the Input class. Depending on your needs, you can use one or the other. You will encounter situations where you sometimes want to block input for some nodes and allow it for others. In this article I will explain a way to achieve this.
 

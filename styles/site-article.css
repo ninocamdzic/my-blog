@@ -7,6 +7,24 @@ article h1 {
   color: #ff7e67;
   padding-bottom: 10px;
   text-transform: none;
+  font-size: 1.5rem;
+}
+
+article h2 {
+  color: #ff7e67;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+
+article h3 {
+  color: #ff7e67;
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+article sup {
+  color: #999;
+  font-style: italic;
 }
 
 article pre {
@@ -15,8 +33,9 @@ article pre {
   padding: 10px;
 }
 
-article pre code {
+article pre.code-block code {
   font-size: 0.9rem;
+  font-style: italic;
 }
 
 article img {

@@ -1,7 +1,6 @@
 import articleRenderer from "./article-renderer/article-renderer.js";
 import codeHighlighter from "./code-highlighter/code-highlighter.js";
 
-const CLASS_SELECTED = 'selected';
 const PAGE_PARAM = 'page';
 const PATH_REGEX = /^(\/[a-zA-Z0-9\-]+)*(\/[a-zA-Z0-9\-]+\.md)$/g;
 const LOAD_ARTICLE_FAILED = 'Failed to retrieve the article.';
@@ -9,20 +8,44 @@ const LOAD_ARTICLE_FAILED = 'Failed to retrieve the article.';
 export class Site {
   #siteMetadata;
   #pageMap;
+  #initialPagePath;
 
-  async init(metadataUrl) {
-    if (!this.#siteMetadata) {
-      const response = await window.fetch(metadataUrl);
+  constructor() {}
+
+  static async init(siteMetadataUrl) {
+    let site;
+
+    if (siteMetadataUrl) {
+      site = new Site();
+      const response = await window.fetch(siteMetadataUrl);
 
       if (response.ok) {
-        this.#siteMetadata = await response.json();
-        this.#pageMap = this.#createPageMap(this.#siteMetadata.pages);
-        this.#initArticleLinks(this.#siteMetadata.pages);
-        this.#initInitialPage(this.#siteMetadata.pages);
-        console.log(`Site '${this.#siteMetadata.name}' successfully initialized.`);
+        site.#siteMetadata = await response.json();
+        site.#pageMap = site.#createPageMap(site.#siteMetadata.pages);
+        site.#initialPagePath = await site.#initInitialPage(site.#siteMetadata.pages);
       } else {
         throw new Error('Failed to load site.json.');
       }
+    }
+
+    return site;
+  }
+
+  get siteMetadata() {
+    return this.#siteMetadata;
+  }
+
+  get initialPagePath() {
+    return this.#initialPagePath;
+  }
+
+  async showArticle(url) {
+    const path = new URL(url).searchParams.get(PAGE_PARAM);
+
+    if (path) {
+      await this.#loadArticle(path);
+    } else {
+      throw Error('No path was found!');
     }
   }
 
@@ -40,29 +63,7 @@ export class Site {
     return this.#pageMap[path];
   }
 
-  #initArticleLinks(pages) {
-    const navListElem = this.#getNavListElement();
-
-    for (let page of pages) {
-      const navItemElem = this.#createNavItemElement(navListElem, page.url, page.desc);
-
-      (function(site) {
-        navItemElem.addEventListener('click', async function(e) {
-          e.preventDefault();
-          const path = new URL(this.href).searchParams.get(PAGE_PARAM);
-
-          if (path) {
-            await site.#loadArticle(path);
-            site.#selectLinkByPath(path);
-          } else {
-            throw Error('No path was found!');
-          }
-        });
-      }(this));
-    }
-  }
-
-  #initInitialPage(pages) {
+  async #initInitialPage(pages) {
     const url = new URL(window.location.href);
     const params = url.searchParams;
     let pagePath = params.get(PAGE_PARAM);
@@ -80,18 +81,18 @@ export class Site {
       }
     }
 
-    this.#loadArticle(pagePath);
-    this.#selectLinkByPath(pagePath);
+    await  this.#loadArticle(pagePath);
+    return pagePath;
   }
 
   async #loadArticle(path) {
     const page = this.#getPageByPath(path);
+    const articleElem = document.querySelector('main article');
 
     if (page) {
       const dateTimeMs = new Date().getMilliseconds();
       const response = await window.fetch(`${path}?dateTime=${dateTimeMs}`);
-      const articleElem = document.querySelector('main article');
-  
+      
       if (response.ok) {
         window.history.pushState('', '', `/?${PAGE_PARAM}=${path}`);
   
@@ -113,47 +114,6 @@ export class Site {
 
     for (let codeElem of codeElems) {
       codeHighlighter.highlight(codeElem);
-    }
-  }
-
-  #getNavListElement() {
-    return document.querySelector('nav ul');
-  }
-
-  #getNavLinkElements() {
-    return this.#getNavListElement().querySelectorAll('a');
-  }
-
-  #createNavItemElement(navListElem, url, text) {
-    const linkElem = document.createElement('a');
-    linkElem.href = `/?${PAGE_PARAM}=${url}`;
-    linkElem.innerText = this.#normalizeLinkText(text);
-    linkElem.title = text;
-
-    const listItemElem = document.createElement('li');
-    listItemElem.appendChild(linkElem);
-    navListElem.appendChild(listItemElem);
-
-    return linkElem;
-  }
-
-  #normalizeLinkText(text) {
-    if (text.length > 26) {
-      return text.substr(0, 26).trim() + "...";
-    }
-    
-    return text;
-  }
-
-  #selectLinkByPath(path) {
-    const linkElems = this.#getNavLinkElements();
-
-    for (let linkElem of linkElems) {
-      if (linkElem.href.endsWith(path)) {
-        linkElem.classList.add(CLASS_SELECTED);
-      } else {
-        linkElem.classList.remove(CLASS_SELECTED);
-      }
     }
   }
 }

@@ -5,34 +5,34 @@ const PAGE_PARAM = 'page';
 const PATH_REGEX = /^(\/[a-zA-Z0-9\-]+)*(\/[a-zA-Z0-9\-]+\.md)$/g;
 const LOAD_ARTICLE_FAILED = 'Failed to retrieve the article.';
 
-export class Site {
-  #siteMetadata;
+export default class Blog {
+  #metadataUrl;
+  #metadata;
   #pageMap;
   #initialPagePath;
 
-  constructor() {}
-
-  static async init(siteMetadataUrl) {
-    let site;
-
-    if (siteMetadataUrl) {
-      site = new Site();
-      const response = await window.fetch(siteMetadataUrl);
-
-      if (response.ok) {
-        site.#siteMetadata = await response.json();
-        site.#pageMap = site.#createPageMap(site.#siteMetadata.pages);
-        site.#initialPagePath = await site.#initInitialPage(site.#siteMetadata.pages);
-      } else {
-        throw new Error('Failed to load site.json.');
-      }
+  constructor(metadataUrl) {
+    if (metadataUrl) {
+      this.#metadataUrl = metadataUrl;
+    } else {
+      throw Error('No metadata URL was specified.');
     }
-
-    return site;
   }
 
-  get siteMetadata() {
-    return this.#siteMetadata;
+  async init() {
+    const response = await window.fetch(this.#metadataUrl);
+
+    if (response.ok) {
+      this.#metadata = await response.json();
+      this.#pageMap = this.#createPageMap(this.#metadata.pages);
+      this.#initialPagePath = await this.#initInitialPage(this.#metadata.pages);
+    } else {
+      throw Error('Failed to load blog.json.');
+    }
+  }
+
+  get metadata() {
+    return this.#metadata;
   }
 
   get initialPagePath() {

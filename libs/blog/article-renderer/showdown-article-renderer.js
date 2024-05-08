@@ -21,6 +21,7 @@ export default class ShowdownArticleRenderer extends AbstractArticleRenderer {
     let result = html;
     result = result.replaceAll(/<pre.*?>/gm, `<pre class="${CLASS_CODE_BLOCK}">`);
     result = result.replaceAll(/%{date-published}%/gm, opts.page.datePublished);
+    result = result.replaceAll(/%{email}%/gm, opts.email);
     return result;
   }
 }

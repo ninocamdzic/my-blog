@@ -1,5 +1,7 @@
 article {
-  text-align: justify;
+  text-align: left;
+  /* See: https://stackoverflow.com/a/73337109 */
+  overflow: auto;
 }
 
 article h1 {
@@ -29,13 +31,14 @@ article sup {
 
 article pre {
   border-radius: 5px;
-  overflow: scroll;
   padding: 10px;
+  /* See: https://stackoverflow.com/a/73337109 */
+  overflow: auto;
 }
 
 article pre.code-block code {
   font-size: 0.9rem;
-  font-style: italic;
+  /* font-style: italic; */
 }
 
 article img {

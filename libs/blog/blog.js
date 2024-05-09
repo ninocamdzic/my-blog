@@ -6,6 +6,7 @@ const PATH_REGEX = /^(\/[a-zA-Z0-9\-]+)+$/g;
 const LOAD_PAGE_FAILED = 'Failed to retrieve the page.';
 
 export default class Blog {
+  #baseUrl;
   #metadataUrl;
   #metadata;
   #pageMap;
@@ -20,7 +21,14 @@ export default class Blog {
   }
 
   async init() {
-    const response = await window.fetch(this.#metadataUrl);
+    const baseElem = document.querySelector('base');
+    this.#baseUrl = location.pathname;
+
+    if (baseElem) {
+      this.#baseUrl = baseElem.href;
+    }
+
+    const response = await window.fetch(`${this.#baseUrl}/${this.#metadataUrl}`);
 
     if (response.ok) {
       this.#metadata = await response.json();
@@ -91,10 +99,10 @@ export default class Blog {
 
     if (page) {
       const dateTimeMs = new Date().getMilliseconds();
-      const response = await window.fetch(`${path}/index.md?dateTime=${dateTimeMs}`);
+      const response = await window.fetch(`${this.#baseUrl}/${path}/index.md?dateTime=${dateTimeMs}`);
       
       if (response.ok) {
-        window.history.pushState('', '', `/?${PAGE_PARAM}=${path}`);
+        window.history.pushState('', '', `${this.#baseUrl}?${PAGE_PARAM}=${path}`);
   
         const text = await response.text();
         articleElem.innerHTML = pageRenderer.render(text, { 

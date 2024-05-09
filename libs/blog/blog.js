@@ -21,8 +21,8 @@ export default class Blog {
   }
 
   async init() {
-    const baseElem = document.querySelector('base');
     this.#baseUrl = location.pathname;
+    const baseElem = document.querySelector('base');
 
     if (baseElem) {
       this.#baseUrl = baseElem.href;
@@ -98,8 +98,7 @@ export default class Blog {
     const articleElem = document.querySelector('main article');
 
     if (page) {
-      const dateTimeMs = new Date().getMilliseconds();
-      const response = await window.fetch(`${this.#baseUrl}/${path}/index.md?dateTime=${dateTimeMs}`);
+      const response = await window.fetch(`${this.#baseUrl}/${path}/index.md`);
       
       if (response.ok) {
         window.history.pushState('', '', `${this.#baseUrl}?${PAGE_PARAM}=${path}`);

@@ -117,9 +117,9 @@ a:hover {
 }
 
 .side-bar ul {
-  list-style-type: none;
+  list-style-type: square;
   padding: 0 0 0 15px;
-  margin: 10px 0 0 0;
+  margin: 10px 0 0 10px;
 }
 
 .side-bar ul li {

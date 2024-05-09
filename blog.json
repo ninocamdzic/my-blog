@@ -13,12 +13,12 @@
     { 
       "desc": "Home", 
       "default": true, 
-      "url": "/pages/home"
+      "url": "./pages/home"
     },
     { 
       "desc": "Java: Basic authentication with Angular.", 
       "default": false, 
-      "url": "/pages/java/basic-auth-spring-boot-angular",
+      "url": "./pages/java/basic-auth-spring-boot-angular",
       "datePublished": "09-05-2024 16:07 CEST",
       "tags": [
         "java"
@@ -27,7 +27,7 @@
     { 
       "desc": "Godot: Input orchestration", 
       "default": false, 
-      "url": "/pages/game-dev/godot/input-orchestration",
+      "url": "./pages/game-dev/godot/input-orchestration",
       "datePublished": "09-05-2024 16:07 CEST",
       "tags": [
         "godot"

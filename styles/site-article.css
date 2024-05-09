@@ -38,7 +38,6 @@ article pre {
 
 article pre.code-block code {
   font-size: 0.9rem;
-  /* font-style: italic; */
 }
 
 article img {
@@ -46,4 +45,6 @@ article img {
   margin-left: auto;
   margin-right: auto;
   border-radius: 5px;
+  max-width: 100%;
+  height: auto;
 }

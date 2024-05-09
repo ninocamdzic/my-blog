@@ -1,4 +1,4 @@
-const CLASS_CLOSED = 'closed';
+const CLASS_OPEN = 'open';
 const CLASS_SELECTED = 'selected';
 
 export default class SideBar {
@@ -13,15 +13,15 @@ export default class SideBar {
   }
 
   isOpen() {
-    return this.#sideBarToggleElem.contains(CLASS_CLOSED);
+    return this.#sideBarElem.classList.contains(CLASS_OPEN);
   }
 
   open() {
-    this.#sideBarToggleElem.add(CLASS_CLOSED);
+    this.#sideBarElem.classList.add(CLASS_OPEN);
   }
 
   close() {
-    this.#sideBarToggleElem.remove(CLASS_CLOSED);
+    this.#sideBarElem.classList.remove(CLASS_OPEN);
   }
 
   init() {
@@ -33,7 +33,7 @@ export default class SideBar {
     this.#sideBarElem = document.querySelector("#side-bar");
     this.#sideBarToggleElem = this.#sideBarElem.querySelector('.toggle');
 
-    this.#sideBarToggleElem.addEventListener('click', function(e) {
+    this.#sideBarToggleElem.addEventListener('click', (e) => {
       if (this.isOpen()) {
         this.close();
       } else {
@@ -58,7 +58,8 @@ export default class SideBar {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           sideBar.#blog.showArticle(this.href);
-          sideBar.#selectItemByUrl(this.href);
+          sideBar.#selectItemByPath(this.href);
+          sideBar.close();
         });
       }(this));
 
@@ -67,13 +68,14 @@ export default class SideBar {
     }
 
     this.#navMenuElem.appendChild(ul);
+    this.#selectItemByPath(this.#blog.initialPagePath);
   }
 
-  #selectItemByUrl(url) {
+  #selectItemByPath(path) {
     const linkElems = this.#navMenuElem.querySelectorAll('a');
 
     for (let linkElem of linkElems) {
-      if (linkElem.href !== url) {
+      if (!linkElem.href.endsWith(path)) {
         linkElem.classList.remove(CLASS_SELECTED);
       } else {
         linkElem.classList.add(CLASS_SELECTED);

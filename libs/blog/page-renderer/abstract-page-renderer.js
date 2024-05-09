@@ -1,6 +1,6 @@
-export default class AbstractArticleRenderer {
+export default class AbstractPageRenderer {
   constructor() {
-    if (this.constructor === AbstractArticleRenderer) {
+    if (this.constructor === AbstractPageRenderer) {
       throw new Error('Cannot instantiate AbstractArticleRenderer. The class is an abstract class.')
     }
   }

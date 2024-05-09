@@ -5,7 +5,7 @@ The problem with basic authentication and AJAX calls is that the `WWW-Authentica
 
 ## How does basic authentication work?
 
-<img src="/articles/java/basic-auth-angular/1.png">
+<img src="imgs/1.png" alt="Basic authentication sequence diagram.">
 
 1. The user clicks on a secure link.
 2. The browser requests the resource from the server. Since the resource is protected, the server will look for the `Authenticate` header. The server can also accept a session cookie if it is configured to do so. If one of the two is not present, the server will respond with an HTTP 401. In that response the `WWW-Authenticate` header is included. This header must include one or more challenges. In our case the challenge will be BASIC. A challenge indicates the authentication scheme to be used to access the secure resource.

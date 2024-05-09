@@ -1,8 +1,8 @@
-import AbstractArticleRenderer from "./abstract-article-renderer.js";
+import AbstractPageRenderer from "./abstract-page-renderer.js";
 
 const CLASS_CODE_BLOCK = 'code-block';
 
-export default class ShowdownArticleRenderer extends AbstractArticleRenderer {
+export default class ShowdownPageRenderer extends AbstractPageRenderer {
   constructor() {
     super();
 
@@ -14,14 +14,15 @@ export default class ShowdownArticleRenderer extends AbstractArticleRenderer {
   render(data, opts) {
     const converter = new window.showdown.Converter();
     converter.setOption('tables', true);
-    return this.#postProcHtml(converter.makeHtml(data), opts);
+    return this.#postProcessHtml(converter.makeHtml(data), opts);
   }
 
-  #postProcHtml(html, opts) {
+  #postProcessHtml(html, opts) {
     let result = html;
     result = result.replaceAll(/<pre.*?>/gm, `<pre class="${CLASS_CODE_BLOCK}">`);
     result = result.replaceAll(/%{date-published}%/gm, opts.page.datePublished);
-    result = result.replaceAll(/%{email}%/gm, opts.email);
+    // URL rewriting for images. This makes it possible to use relative URLs in md files.
+    result = result.replaceAll(/<img(.*)src="(.*?)"\s?(.*)\/?>/gm, `<img$1src="${opts.page.url}/$2"$3/>`);
     return result;
   }
 }

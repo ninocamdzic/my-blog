@@ -1,9 +1,9 @@
-import articleRenderer from "./article-renderer/article-renderer.js";
+import pageRenderer from "./page-renderer/page-renderer.js";
 import codeHighlighter from "./code-highlighter/code-highlighter.js";
 
 const PAGE_PARAM = 'page';
-const PATH_REGEX = /^(\/[a-zA-Z0-9\-]+)*(\/[a-zA-Z0-9\-]+\.md)$/g;
-const LOAD_ARTICLE_FAILED = 'Failed to retrieve the article.';
+const PATH_REGEX = /^(\/[a-zA-Z0-9\-]+)+$/g;
+const LOAD_PAGE_FAILED = 'Failed to retrieve the page.';
 
 export default class Blog {
   #metadataUrl;
@@ -39,11 +39,11 @@ export default class Blog {
     return this.#initialPagePath;
   }
 
-  async showArticle(url) {
+  async showPage(url) {
     const path = new URL(url).searchParams.get(PAGE_PARAM);
 
     if (path) {
-      await this.#loadArticle(path);
+      await this.#loadPage(path);
     } else {
       throw Error('No path was found!');
     }
@@ -81,31 +81,31 @@ export default class Blog {
       }
     }
 
-    await  this.#loadArticle(pagePath);
+    await  this.#loadPage(pagePath);
     return pagePath;
   }
 
-  async #loadArticle(path) {
+  async #loadPage(path) {
     const page = this.#getPageByPath(path);
     const articleElem = document.querySelector('main article');
 
     if (page) {
       const dateTimeMs = new Date().getMilliseconds();
-      const response = await window.fetch(`${path}?dateTime=${dateTimeMs}`);
+      const response = await window.fetch(`${path}/index.md?dateTime=${dateTimeMs}`);
       
       if (response.ok) {
         window.history.pushState('', '', `/?${PAGE_PARAM}=${path}`);
   
         const text = await response.text();
-        articleElem.innerHTML = articleRenderer.render(text, { 
+        articleElem.innerHTML = pageRenderer.render(text, { 
           page: page
         });
         this.#highlightCodeBlocks();
       } else {
-        articleElem.innerHTML = LOAD_ARTICLE_FAILED;
+        articleElem.innerHTML = LOAD_PAGE_FAILED;
       }
     } else {
-      articleElem.innerHTML = LOAD_ARTICLE_FAILED;
+      articleElem.innerHTML = LOAD_PAGE_FAILED;
     }
   }
 

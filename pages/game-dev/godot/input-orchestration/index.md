@@ -66,8 +66,8 @@ The InputOrchestrator has an export variable where we can configure which UI's s
 
 First, we need to attach the InputOrchestrator.gd script to a node. I usually add them as a direct child of the root node. Once the script is attached, we can configure the InputOrchestrator.
 
-<img src="/articles/game-dev/godot/input-orchestration/1.png">
+<img src="imgs/1.png" alt="Godot project explorer with node InputOrchestrator selected.">
 
 Now we can configure everything in Godot without using code. Here is an example of how I have configured my InputOrchestrator.
 
-<img width="300" src="/articles/game-dev/godot/input-orchestration/2.png">
+<img width="300" src="imgs/2.png" alt="Godot properties panel for InputOrchestrator.">

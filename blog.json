@@ -7,28 +7,28 @@
   },
   "tags": [
     { "id": "godot", "desc": "Godot" },
-    { "id": "web-dev", "desc": "Web Dev" }
+    { "id": "java", "desc": "Java" }
   ],
   "pages": [
     { 
       "desc": "Home", 
       "default": true, 
-      "url": "/articles/home.md"
+      "url": "/pages/home"
     },
     { 
       "desc": "Java: Basic authentication with Angular.", 
       "default": false, 
-      "url": "/articles/java/basic-auth-angular.md",
-      "datePublished": "01-01-2024 17:01:02 CEST",
+      "url": "/pages/java/basic-auth-spring-boot-angular",
+      "datePublished": "09-05-2024 16:07 CEST",
       "tags": [
-        "godot"
+        "java"
       ]
     },
     { 
       "desc": "Godot: Input orchestration", 
       "default": false, 
-      "url": "/articles/game-dev/godot/input-orchestration.md",
-      "datePublished": "01-01-2024 17:02:02 CEST",
+      "url": "/pages/game-dev/godot/input-orchestration",
+      "datePublished": "09-05-2024 16:07 CEST",
       "tags": [
         "godot"
       ]

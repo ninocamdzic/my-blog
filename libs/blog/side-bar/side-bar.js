@@ -57,7 +57,7 @@ export default class SideBar {
       (function(sideBar) {
         a.addEventListener('click', function(e) {
           e.preventDefault();
-          sideBar.#blog.showArticle(this.href);
+          sideBar.#blog.showPage(this.href);
           sideBar.#selectItemByPath(this.href);
           sideBar.close();
         });

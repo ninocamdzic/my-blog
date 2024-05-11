@@ -2,28 +2,28 @@
   font-family: 'Poppins';
   font-style: normal;
   font-weight: normal;
-  src: url("../fonts/Poppins/Poppins-Regular.ttf");
+  src: url('./fonts/Poppins/Poppins-Regular.ttf');
  }
 
  @font-face {
   font-family: 'Poppins';
   font-style: normal;
   font-weight: bold;
-  src: url("../fonts/Poppins/Poppins-Bold.ttf");
+  src: url('./fonts/Poppins/Poppins-Bold.ttf');
  }
 
  @font-face {
   font-family: 'Poppins';
   font-style: italic;
   font-weight: normal;
-  src: url("../fonts/Poppins/Poppins-Italic.ttf");
+  src: url('./fonts/Poppins/Poppins-Italic.ttf');
  }
 
  @font-face {
   font-family: 'Poppins';
   font-style: italic;
   font-weight: bold;
-  src: url("../fonts/Poppins/Poppins-BoldItalic.ttf");
+  src: url('./fonts/Poppins/Poppins-BoldItalic.ttf');
  }
 
 body, html {
@@ -134,6 +134,14 @@ a:hover {
   margin-top: 20px;
 }
 
+.side-bar section.articles .nav-loader {
+  text-align: center;
+}
+
+.side-bar section.articles .nav-loader.closed {
+  display: none;
+}
+
 main {
   background-color: #373a3f;
   border-radius: 5px;
@@ -144,6 +152,14 @@ main {
   /* See: https://stackoverflow.com/a/73337109 */
   overflow: auto;
   padding: 20px;
+}
+
+main .page-loader {
+  text-align: center;
+}
+
+main .page-loader.closed {
+  display: none;
 }
 
 footer {
@@ -157,6 +173,28 @@ footer p {
   padding: 0;
   text-align: center;
 }
+
+/* Loader from: https://cssloaders.github.io/ */
+
+.loader {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-block;
+  border-top: 3px solid #aad1a5;
+  border-right: 3px solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
 
 @media only screen and (max-width: 1024px) {
   .site-wrapper {

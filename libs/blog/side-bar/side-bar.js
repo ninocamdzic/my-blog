@@ -1,15 +1,18 @@
 const CLASS_OPEN = 'open';
 const CLASS_SELECTED = 'selected';
+const CLOSED_CLASS = 'closed';
 
 export default class SideBar {
   #blog;
+  #options;
+  #loaderElem;
   #sideBarElem;
   #sideBarToggleElem;
   #navMenuElem;
-  
 
-  constructor(blog) {
+  constructor(blog, options) {
     this.#blog = blog;
+    this.#options = options || {};
   }
 
   isOpen() {
@@ -25,8 +28,25 @@ export default class SideBar {
   }
 
   init() {
+    this.#initLoader();
     this.#initSideBar();
     this.#initArticleLinks();
+  }
+
+  #initLoader() {
+    this.#loaderElem = document.querySelector('.nav-loader');
+  }
+
+  #showLoader() {
+    if (this.#loaderElem) {
+      this.#loaderElem.classList.remove(CLOSED_CLASS);
+    }
+  }
+
+  #closeLoader() {
+    if (this.#loaderElem) {
+      this.#loaderElem.classList.add(CLOSED_CLASS);
+    }
   }
 
   #initSideBar() {
@@ -43,6 +63,7 @@ export default class SideBar {
   }
 
   #initArticleLinks() {
+    this.#showLoader();
     this.#navMenuElem = this.#sideBarElem.querySelector('nav');
     const ul = document.createElement('ul');
 
@@ -69,6 +90,7 @@ export default class SideBar {
 
     this.#navMenuElem.appendChild(ul);
     this.#selectItemByPath(this.#blog.initialPagePath);
+    this.#closeLoader();
   }
 
   #selectItemByPath(path) {

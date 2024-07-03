@@ -7,7 +7,8 @@
   },
   "tags": [
     { "id": "godot", "desc": "Godot" },
-    { "id": "java", "desc": "Java" }
+    { "id": "java", "desc": "Java" },
+    { "id": "linux", "desc": "Linux" }
   ],
   "pages": [
     { 
@@ -31,6 +32,15 @@
       "datePublished": "09-05-2024 16:07 CEST",
       "tags": [
         "godot"
+      ]
+    },
+    {
+      "desc": "Linux: Setting up an Java development environment.",
+      "default": false,
+      "url": "./pages/linux/linux-mint-java-dev-setup",
+      "datePublished": "03-07-2024 17:49 CEST",
+      "tags": [
+        "linux"
       ]
     }
   ]

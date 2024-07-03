@@ -1,3 +1,8 @@
 # My Blog
 
-Welcome. This blog is where I document my thoughts and experiences, primarily in the field of software development. It’s a compilation of personal notes covering a variety of topics. While software development is the main focus, you’ll also find content on other subjects that I find interesting. Hope you find the posts useful.
+# Running
+
+The blog needs to run on a web-server. A simple web-server we can use is [http-server](https://www.npmjs.com/package/http-server).
+
+1. Run `npx http-server` in the root folder of the project.
+2. Now open http://localhost:8080 in your browser and navigate to the project folder.

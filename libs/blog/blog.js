@@ -2,7 +2,7 @@ import pageRenderer from "./page-renderer/page-renderer.js";
 import codeHighlighter from "./code-highlighter/code-highlighter.js";
 
 const PAGE_PARAM = 'page';
-const PATH_REGEX = /^(\/[a-zA-Z0-9\-]+)+$/g;
+const PATH_REGEX = /^\.(\/[a-zA-Z0-9\-]+)+$/g;
 const LOAD_PAGE_FAILED = 'Failed to retrieve the page.';
 const CLASS_CLOSED = 'closed';
 

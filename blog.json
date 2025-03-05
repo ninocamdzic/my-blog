@@ -1,6 +1,6 @@
 {
-  "name": "Your site name",
-  "author": "Author name",
+  "name": "My Blog",
+  "author": "Nino Camdzic",
   "contact": {
     "mail": "author@mail.here",
     "twitter": "Twitter handle here"
@@ -17,7 +17,7 @@
       "url": "./pages/home"
     },
     { 
-      "desc": "Java: Basic authentication with Angular.", 
+      "desc": "Java: Basic authentication with Angular", 
       "default": false, 
       "url": "./pages/java/basic-auth-spring-boot-angular",
       "datePublished": "09-05-2024 16:07 CEST",
@@ -35,12 +35,21 @@
       ]
     },
     {
-      "desc": "Linux: Setting up an Java development environment.",
+      "desc": "Linux: Setting up an Java development environment",
       "default": false,
       "url": "./pages/linux/linux-mint-java-dev-setup",
       "datePublished": "03-07-2024 17:49 CEST",
       "tags": [
         "linux"
+      ]
+    },
+    {
+      "desc": "Java: Adapter pattern",
+      "default": false,
+      "url": "./pages/java/adapter-pattern",
+      "datePublished": "05-03-2025 17:04 CET",
+      "tags": [
+        "java"
       ]
     }
   ]
